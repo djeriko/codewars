@@ -1,69 +1,27 @@
-#include <stdlib.h>
+#include <vector>
 #include <iostream>
 
 using namespace std;
 
-// TODO : SOLVE TASK
-
-bool usedInRow(unsigned int board[9][9], int row, int number)
-{
-  for (size_t col = 0; col < 9; col++)
-  {
-    if (board[col][row] == number)
-    {
-      return true;
-    }
-  }
-  cout << "Error in row" << endl;
-  return false;
-}
-
-bool usedInCol(unsigned int board[9][9], int col, int number)
-{
-  for (size_t row = 0; row < 9; row++)
-  {
-    if (board[col][row] == number)
-    {
-      return true;
-    }
-  }
-  cout << "Error in col" << endl;
-  return false;
-}
-
-bool usedInBox(unsigned int board[9][9], int boxStartRow, int boxStartCol, int number)
-{
-  for (size_t row = 0; row < 3; row++)
-  {
-    for (size_t col = 0; col < 3; col++)
-    {
-      if (board[row + boxStartRow][col + boxStartCol] == number)
-      {
-        return true;
-      }
-    }
-  }
-    cout << "Error in box" << endl;
-    return false;
-}
-
-bool validSolution(unsigned int board[9][9])
-{
-
-  for (size_t number = 1; number <= 9; number++)
-  {
-    for (size_t row = 0; row < 9; row++)
-      for (size_t col = 0; col < 9; col++)
-      {
-        {
-          if (!usedInRow(board, row, number) || !usedInCol(board, row, number) || !usedInBox(board, row - row % 3, col - col % 3, number))
-          {
-            return false;
-          }
+bool validSolution(unsigned int board[9][9]){
+  /* Write your solution here */
+    std::vector<int> s{0,0,0};
+    for (int i = 0; i < 9; ++i) {
+        int sum1 = 0, sum2 = 0;
+        for (int j = 0; j < 9; ++j) {
+            sum1 += board[i][j];
+            sum2 += board[j][i];
+            s[j/3] += board[i][j];
         }
-      }
-  }
-  return true;
+        if (sum1 != 45) return false;
+        if (sum2 != 45) return false;
+        if ((i+1) % 3 == 0) {
+            if (s != std::vector<int>{45,45,45})
+                return false;
+            s = {0,0,0};
+        }
+    }
+    return true;
 }
 
 int main()
